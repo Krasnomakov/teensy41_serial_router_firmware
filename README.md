@@ -1,32 +1,23 @@
-# Serial Router Playground
+# Echoes of Tomorrow - Serial routing Firmware
 
-Firmware, simulation scaffolding, and documentation for routing the GLOW 2025 choreography protocol between the Mac controller, a Teensy 4.1 router, and ESP32-based device endpoints.
+This repository contains the embedded firmware for the microcontroller that operate as a serial router in the **Echoes of Tomorrow** GLOW 2025 project.
 
-## Layout
-
-- `states_diagram/` – Markdown spec for the protocol plus a Python/Graphviz generator that emits DOT/SVG diagrams.
-- `actual_code/` – Arduino sketches for Teensy and ESP firmware (`router_protocol_bridge/`) and the original one-bit probe prototypes.
-- `host_sim/` – C++ harness that simulates the MAC⇄Teensy⇄ESP exchange using mock serial ports.
-
-## Repository Structure
+## Overview
+- Written in C++
+- Compiled and uploaded to microcontrollers (Teensy 4.1)
+- Connects the Mac mini to the microcontrollers via serial
 
 ```
-serial-router/
-├─ README.md                         # Project overview and quick-start workflow
-├─ actual_code/
-│  ├─ one_bit_connector_tx_rx/       # Original Teensy↔ESP link probes and supporting notes
-│  └─ router_protocol_bridge/        # Production Teensy router + ESP responder sketches
-├─ host_sim/
-│  ├─ main.cpp                       # Virtual MAC/Router/ESP harness exercising the protocol
-│  ├─ base_connector.*               # Shared helpers for building/parsing protocol frames
-│  └─ mock_serial.hpp                # In-memory serial port used by the simulator
-└─ states_diagram/
-   ├─ teensy_esp_router_states.md    # Authoritative protocol specification (commands, states)
-   ├─ diagram_generator.py           # Markdown-to-DOT/SVG renderer for the spec
-   └─ output/                        # Generated Graphviz artifacts (DOT/SVG)
+arm/
+├── firmware/           # C++ firmware source
+├── tests/              # Diagnostic sketches/tests
+└── documentation/      # Schematics and setup guides
 ```
 
-## Quick Start
+## Setup Instructions
+1. Open `firmware/arm.ino` in the Arduino IDE
+2. Select the correct board (Teensy 4.1)
+3. Upload to the connected board
 
 1. Generate the protocol diagram: `cd states_diagram && python3 diagram_generator.py`
 2. Build the host simulator: `cd host_sim && g++ -std=c++17 -Wall -Wextra -pedantic main.cpp base_connector.cpp -o host_sim_demo`
@@ -34,7 +25,8 @@ serial-router/
    - Teensy 4.1: open `actual_code/router_protocol_bridge/teensy_router.ino` in the Arduino IDE and upload with FQBN `teensy:avr:teensy41`.
    - ESP32: open `actual_code/router_protocol_bridge/esp_router.ino`, select the appropriate ESP32 board, and upload (pins GPIO26/25 map to Teensy RX1/TX1).
 
-## Manual Testing
+## Documentation
+See `documentation/` or the [Wiki](https://github.com/GLOW-Delta-2025/master/wiki) for details on architecture, function descriptions, and setup.
 
 - Open the Teensy USB Serial monitor at 115200 baud and send protocol frames (for example `!!ARM1:REQUEST:MAKE_STAR{speed=3,color=red,brightness=80,size=10}##`).
 - Watch the Teensy console for `[ROUTER]` debug lines and the echoed frames that return to the MAC side.
