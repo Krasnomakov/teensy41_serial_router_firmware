@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Ignore Mac system files
+.DS_Store
+/host_sim/host_sim_demo
