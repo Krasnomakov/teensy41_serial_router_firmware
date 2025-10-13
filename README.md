@@ -2,6 +2,8 @@
 
 This repository contains the embedded firmware for the microcontroller that operate as a serial router in the **Echoes of Tomorrow** GLOW 2025 project.
 
+Full-project can be found here: https://github.com/GLOW-Delta-2025
+
 ## Overview
 - Written in C++
 - Compiled and uploaded to microcontrollers (Teensy 4.1)
