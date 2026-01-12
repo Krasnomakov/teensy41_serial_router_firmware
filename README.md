@@ -15,8 +15,9 @@ serial-router/
 │  │  └─ Protocol/                       # Protocol parsing logic (C++ agnostic)
 │  ├─ test/                              # Unit Tests
 │  │  └─ test_packet_parsing.cpp         # Native unit tests
-│  ├─ final_serial_router_protocol_bridge/ # Production Firmware
-│  │  ├─ teensy_router.ino
+│  ├─ final_serial_router_protocol_bridge/ # Production Teensy Firmware
+│  │  └─ teensy_router.ino
+│  ├─ esp_firmware/                      # ESP32 Responder Firmware
 │  │  └─ esp_router.ino
 │  └─ development/                       # Legacy/Dev sketches
 ├─ host_sim/                             # C++ MAC↔Router↔ESP protocol simulator (uses CommandLibary/CmdLib.h)
@@ -49,7 +50,7 @@ serial-router/
 ## Firmware Pair (Production)
 - Teensy 4.1: `actual_code/final_serial_router_protocol_bridge/teensy_router.ino`
   - Responsibilities: frame parsing, routing, address rewriting, acknowledgements (`STAR_ARRIVED`, `CLIMAX_READY`, `COMM_ERROR`).
-- ESP32 debug/responder: `actual_code/final_serial_router_protocol_bridge/esp_router.ino`
+- ESP32 debug/responder: `actual_code/esp_firmware/esp_router.ino`
   - Simulates endpoint confirmations and triggers follow-up notifications (e.g. emits `STAR_ARRIVED` after `SEND_STAR`).
 
 ### Bench Wiring
@@ -127,6 +128,8 @@ To maintain the "Manage & Control" standards, you can run verification steps loc
   - Install via pip: `pip install platformio`
   - Or via Brew: `brew install platformio`
   - *Note*: Ensure `pio` is in your PATH.
+  - **Mac Users (Apple Silicon)**: You must install Rosetta 2 for the compiler toolchain to work:
+    `softwareupdate --install-rosetta`
 
 ### 2. Running Unit Tests (Software Logic)
 Run the native C++ unit tests (no hardware required) to verify protocol parsing:
