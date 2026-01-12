@@ -145,9 +145,4 @@ pio run -e teensy41
 
 ## License & Usage
 - Non-commercial, no-derivatives license (see `LICENSE`). Internal experimentation and academic study permitted; distribution of modified code requires separate permission.
-
-## Contact / Next Steps
-- Pending items: timeout purge of partial frames, buffer overflow partial-drop strategy, pending entry TTL.
-- After implementing performance hooks, capture empirical T1–T5 timing and integrate into acceptance reporting.
-
 ---
