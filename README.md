@@ -42,6 +42,7 @@ serial-router/
    └─ GLOW hardware communication agreements.pdf
    └─ GLOW 2025_ Serial Router Firmware Design.pdf
    └─ GLOW 2025 Firmware & Automated test realization.pdf
+   └─ GLOW 2025 management & Control.pdf
 ├─ CONTRIBUTING.md                       # Contribution Guidelines
 └─ README.md
 ```
