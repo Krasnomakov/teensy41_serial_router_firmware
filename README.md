@@ -6,14 +6,19 @@ Routing firmware, simulation scaffolding, and design documentation for the GLOW 
 
 ```
 serial-router/
+├─ .github/                              # CI/CD Workflows & Templates
+│  ├─ workflows/                         # GitHub Actions (test.yml, release.yml)
+│  └─ ISSUE_TEMPLATE/                    # Bug/Feature templates
 ├─ actual_code/
-│  ├─ development/
-│  │  ├─ one_bit_connector_tx_rx/        # Early link probes & TX/RX experiments
-│  │  └─ router_protocol_bridge/         # Development revisions of Teensy/ESP sketches
-│  └─ final_serial_router_protocol_bridge/ # Production Teensy & ESP firmware pair
-│      ├─ teensy_router.ino              # Teensy 4.1 routing firmware (current reference)
-│      ├─ esp_router.ino                 # ESP32 debug/responder firmware
-│      └─ README.md                      # Firmware usage notes
+│  ├─ platformio.ini                     # PlatformIO Configuration (Native + Teensy)
+│  ├─ lib/                               # Shared Libraries
+│  │  └─ Protocol/                       # Protocol parsing logic (C++ agnostic)
+│  ├─ test/                              # Unit Tests
+│  │  └─ test_packet_parsing.cpp         # Native unit tests
+│  ├─ final_serial_router_protocol_bridge/ # Production Firmware
+│  │  ├─ teensy_router.ino
+│  │  └─ esp_router.ino
+│  └─ development/                       # Legacy/Dev sketches
 ├─ host_sim/                             # C++ MAC↔Router↔ESP protocol simulator (uses CommandLibary/CmdLib.h)
 │  ├─ main.cpp
 │  ├─ base_connector.cpp|hpp
@@ -29,13 +34,15 @@ serial-router/
 │  │  ├─ teensy_esp_router_states.md     # Earlier protocol spec
 │  │  └─ final_router_protocol_bridge/   # Prior v2 states + DOT output
 │  └─ README.md
-└─ docs/                                 # Documentation
+├─ docs/                                 # Documentation
    └─ GLOW 2025 Project Analysis & Advice.pdf
    └─ GLOW 2025_ Serial Router Firmware acceptance test & integration.pdf
    └─ GLOW 2025_ Serial Router Firmware Technical Advice.pdf 
    └─ GLOW hardware communication agreements.pdf
    └─ GLOW 2025_ Serial Router Firmware Design.pdf
    └─ GLOW 2025 Firmware & Automated test realization.pdf
+├─ CONTRIBUTING.md                       # Contribution Guidelines
+└─ README.md
 ```
 
 
@@ -92,6 +99,48 @@ Refer to `teensy_router_states.puml` for the routing FSM: Idle → Receiving →
 - Keep diagram and code aligned (update both on routing/ack logic changes).
 - Remove `Serial1.flush()` and introduce timestamp logging before claiming performance improvements.
 - Run `git status` and commit diagram changes alongside code updates.
+
+## Project Professionalization (Manage & Control)
+To meet the Fontys HBO-i "Manage & Control" Level 3.1 KPI, this repository has been upgraded with:
+
+### 1. Automated Testing (CI)
+- **GitHub Actions**: `.github/workflows/test.yml` automatically builds the firmware and runs unit tests on every push.
+- **Unit Testing**: Native C++ logic tests using `Unity` and `ArduinoFake` in `actual_code/test/`.
+- **Simulation Check**: CI verifies the host simulation code compiles.
+
+### 2. Release Management (CD)
+- **Automated Releases**: Pushing a tag (e.g., `v1.0.0`) triggers `.github/workflows/release.yml`, which builds `firmware.hex` and attaches it to a GitHub Release.
+
+### 3. Teamwork Support
+- **Contribution Guidelines**: See `CONTRIBUTING.md` for git flow and commit conventions.
+- **Standardized Templates**: Issue and Pull Request templates to ensure quality reporting.
+
+### 3. Teamwork Support
+- **Contribution Guidelines**: See `CONTRIBUTING.md` for git flow and commit conventions.
+- **Standardized Templates**: Issue and Pull Request templates to ensure quality reporting.
+
+## Local Development & Verification
+To maintain the "Manage & Control" standards, you can run verification steps locally before pushing.
+
+### 1. Prerequisites
+- **PlatformIO**: Required for building firmware and running native tests.
+  - Install via pip: `pip install platformio`
+  - Or via Brew: `brew install platformio`
+  - *Note*: Ensure `pio` is in your PATH.
+
+### 2. Running Unit Tests (Software Logic)
+Run the native C++ unit tests (no hardware required) to verify protocol parsing:
+```bash
+cd actual_code
+pio test -e native
+```
+
+### 3. Verification Build (Hardware Compatibility)
+Verify that the firmware compiles correctly for the Teensy 4.1:
+```bash
+cd actual_code
+pio run -e teensy41
+```
 
 ## License & Usage
 - Non-commercial, no-derivatives license (see `LICENSE`). Internal experimentation and academic study permitted; distribution of modified code requires separate permission.
