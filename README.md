@@ -116,9 +116,7 @@ To meet the Fontys HBO-i "Manage & Control" Level 3.1 KPI, this repository has b
 - **Contribution Guidelines**: See `CONTRIBUTING.md` for git flow and commit conventions.
 - **Standardized Templates**: Issue and Pull Request templates to ensure quality reporting.
 
-### 3. Teamwork Support
-- **Contribution Guidelines**: See `CONTRIBUTING.md` for git flow and commit conventions.
-- **Standardized Templates**: Issue and Pull Request templates to ensure quality reporting.
+
 
 ## Local Development & Verification
 To maintain the "Manage & Control" standards, you can run verification steps locally before pushing.
